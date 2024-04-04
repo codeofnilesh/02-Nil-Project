@@ -6,4 +6,6 @@ import in.nilesh.entities.User;
 
 public interface UserRepo extends JpaRepository<User, Integer> {
 
+	public User findByEmail(String email);
+
 }
