@@ -3,13 +3,17 @@ package in.nilesh.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 
+import in.nilesh.binding.LoginForm;
 import in.nilesh.binding.RegisterForm;
+import in.nilesh.binding.ResetPwdForm;
 import in.nilesh.entities.City;
 import in.nilesh.entities.Country;
 import in.nilesh.entities.State;
@@ -20,6 +24,7 @@ import in.nilesh.repository.StateRepo;
 import in.nilesh.repository.UserRepo;
 import in.nilesh.utils.EmailUtils;
 
+@Service
 public class UserServiceImpl implements UserService {
 
 	@Autowired
@@ -33,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepo usRepo;
-	
+
 	@Autowired
 	private EmailUtils emailUtils;
 
@@ -78,7 +83,7 @@ public class UserServiceImpl implements UserService {
 		formObj.setPwdUpdated("NO");
 		User user = new User();
 		BeanUtils.copyProperties(formObj, user);
-
+		usRepo.save(user);
 		String subject = "Your account created - Ashok IT";
 		String body = "Your Pwd : " + formObj.getPwd();
 
@@ -98,6 +103,24 @@ public class UserServiceImpl implements UserService {
 		}
 
 		return randomString.toString();
+	}
+
+	@Override
+	public User login(LoginForm formObj) {
+		return usRepo.findByEmailAndPwd(formObj.getEmail(), formObj.getPwd());
+	}
+
+	@Override
+	public boolean resetPwd(ResetPwdForm formObj) {
+		Optional<User> findById = usRepo.findById(formObj.getUserId());
+		if (findById.isPresent()) {
+			User user = findById.get();
+			user.setPwd(formObj.getNewPwd());
+			user.setPwdUpdated("YES");
+			usRepo.save(user);
+			return true;
+		}
+		return false;
 	}
 
 }
