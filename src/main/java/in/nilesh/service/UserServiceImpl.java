@@ -3,9 +3,13 @@ package in.nilesh.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 
+import in.nilesh.binding.RegisterForm;
 import in.nilesh.entities.City;
 import in.nilesh.entities.Country;
 import in.nilesh.entities.State;
@@ -25,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private CityRepo ciRepo;
-	
+
 	@Autowired
 	private UserRepo usRepo;
 
@@ -61,6 +65,35 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUser(String email) {
 		return usRepo.findByEmail(email);
+	}
+
+	@Override
+	public boolean saveUser(RegisterForm formObj) {
+
+		formObj.setPwd(generateRandomPwd());
+		formObj.setPwdUpdated("NO");
+		User user = new User();
+		BeanUtils.copyProperties(formObj, user);
+
+		String subject = "Your account created - Ashok IT";
+		String body = "Your Pwd : " + formObj.getPwd();
+
+		return false;
+	}
+
+	private String generateRandomPwd() {
+		String alphanumericCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuv";
+
+		StringBuffer randomString = new StringBuffer(5);
+		Random random = new Random();
+
+		for (int i = 0; i < 5; i++) {
+			int randomIndex = random.nextInt(alphanumericCharacters.length() - 1);
+			char randomChar = alphanumericCharacters.charAt(randomIndex);
+			randomString.append(randomChar);
+		}
+
+		return randomString.toString();
 	}
 
 }

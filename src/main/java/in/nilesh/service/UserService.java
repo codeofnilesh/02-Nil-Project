@@ -2,6 +2,7 @@ package in.nilesh.service;
 
 import java.util.Map;
 
+import in.nilesh.binding.RegisterForm;
 import in.nilesh.entities.User;
 
 public interface UserService {
@@ -14,7 +15,7 @@ public interface UserService {
 
 	public User getUser(String email);
 
-	//public boolean saveUser(RegisterForm formObj);
+	public boolean saveUser(RegisterForm formObj);
 
 	//public User login(LoginForm formObj);
 
