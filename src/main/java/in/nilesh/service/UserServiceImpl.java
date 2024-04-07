@@ -18,6 +18,7 @@ import in.nilesh.repository.CityRepo;
 import in.nilesh.repository.CountryRepo;
 import in.nilesh.repository.StateRepo;
 import in.nilesh.repository.UserRepo;
+import in.nilesh.utils.EmailUtils;
 
 public class UserServiceImpl implements UserService {
 
@@ -32,6 +33,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepo usRepo;
+	
+	@Autowired
+	private EmailUtils emailUtils;
 
 	@Override
 	public Map<Integer, String> getCountries() {
@@ -78,7 +82,7 @@ public class UserServiceImpl implements UserService {
 		String subject = "Your account created - Ashok IT";
 		String body = "Your Pwd : " + formObj.getPwd();
 
-		return false;
+		return emailUtils.mailSend(subject, body, formObj.getEmail());
 	}
 
 	private String generateRandomPwd() {
