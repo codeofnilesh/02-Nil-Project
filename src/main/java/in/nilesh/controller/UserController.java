@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import in.nilesh.binding.LoginForm;
 import in.nilesh.binding.RegisterForm;
 import in.nilesh.binding.ResetPwdForm;
+import in.nilesh.contants.AppContants;
 import in.nilesh.entities.User;
+import in.nilesh.props.AppProps;
 import in.nilesh.service.UserService;
 
 @Controller
@@ -23,6 +25,8 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private AppProps appProps;
 
 	@GetMapping("/")
 	public String index(Model model) {
@@ -35,7 +39,7 @@ public class UserController {
 		User user = userService.login(login);
 
 		if (user == null) {
-			model.addAttribute("errMsg", "Invalid Credentials");
+			model.addAttribute(AppContants.ERROR_MSG,appProps.getMessages().get("invalidLogin"));
 			return "index";
 		}
 
@@ -55,7 +59,7 @@ public class UserController {
 	public String updatePwd(@ModelAttribute("resetPwd") ResetPwdForm resetPwd, Model model) {
 
 		if (!resetPwd.getNewPwd().equals(resetPwd.getConfirmPwd())) {
-			model.addAttribute("errMsg", "Both Pwds should be same");
+			model.addAttribute("errMsg", appProps.getMessages().get("bothPwdSame"));
 			return "resetPwd";
 		}
 
@@ -65,7 +69,7 @@ public class UserController {
 			return "redirect:dashboard";
 		}
 
-		model.addAttribute("errMsg", "Pwd update failed");
+		model.addAttribute("errMsg", appProps.getMessages().get("Pwd Update faild"));
 		return "resetPwd";
 
 	}
@@ -96,9 +100,9 @@ public class UserController {
 		boolean saveUser = userService.saveUser(registerForm);
 
 		if (saveUser) {
-			model.addAttribute("succMsg", "Registration Success");
+			model.addAttribute("succMsg", appProps.getMessages().get("regSuccess"));
 		} else {
-			model.addAttribute("errMsg", "Registration Failed");
+			model.addAttribute("errMsg", appProps.getMessages().get("regFailed"));
 		}
 
 		Map<Integer, String> countries = userService.getCountries();
