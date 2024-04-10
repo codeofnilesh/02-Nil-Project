@@ -1,7 +1,6 @@
 package in.nilesh.controller;
 
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,9 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import in.nilesh.binding.LoginForm;
 import in.nilesh.binding.RegisterForm;
 import in.nilesh.binding.ResetPwdForm;
@@ -39,7 +36,7 @@ public class UserController {
 		User user = userService.login(login);
 
 		if (user == null) {
-			model.addAttribute(AppContants.ERROR_MSG,appProps.getMessages().get("invalidLogin"));
+			model.addAttribute(AppContants.ERROR_MSG, appProps.getMessages().get("invalidLogin"));
 			return "index";
 		}
 
@@ -48,8 +45,8 @@ public class UserController {
 			ResetPwdForm formObj = new ResetPwdForm();
 			formObj.setUserId(user.getUserId());
 
-			model.addAttribute("resetPwd", formObj);
-			return "resetPwd";
+			model.addAttribute(AppContants.RESET_PWD, formObj);
+			return AppContants.RESET_PWD;
 		}
 
 		return "redirect:dashboard";
@@ -59,8 +56,8 @@ public class UserController {
 	public String updatePwd(@ModelAttribute("resetPwd") ResetPwdForm resetPwd, Model model) {
 
 		if (!resetPwd.getNewPwd().equals(resetPwd.getConfirmPwd())) {
-			model.addAttribute("errMsg", appProps.getMessages().get("bothPwdSame"));
-			return "resetPwd";
+			model.addAttribute(AppContants.ERROR_MSG, appProps.getMessages().get("bothPwdSame"));
+			return AppContants.RESET_PWD;
 		}
 
 		boolean status = userService.resetPwd(resetPwd);
@@ -69,8 +66,8 @@ public class UserController {
 			return "redirect:dashboard";
 		}
 
-		model.addAttribute("errMsg", appProps.getMessages().get("Pwd Update faild"));
-		return "resetPwd";
+		model.addAttribute(AppContants.ERROR_MSG, appProps.getMessages().get("Pwd Update faild"));
+		return AppContants.RESET_PWD;
 
 	}
 
@@ -100,9 +97,9 @@ public class UserController {
 		boolean saveUser = userService.saveUser(registerForm);
 
 		if (saveUser) {
-			model.addAttribute("succMsg", appProps.getMessages().get("regSuccess"));
+			model.addAttribute(AppContants.SUCCESS_MSG, appProps.getMessages().get("regSuccess"));
 		} else {
-			model.addAttribute("errMsg", appProps.getMessages().get("regFailed"));
+			model.addAttribute(AppContants.ERROR_MSG, appProps.getMessages().get("regFailed"));
 		}
 
 		Map<Integer, String> countries = userService.getCountries();

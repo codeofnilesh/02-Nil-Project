@@ -16,6 +16,8 @@
 	<description>Project for User Management</description>
 	<properties>
 		<java.version>17</java.version>
+		<sonar.host.url>http://localhost:9000/</sonar.host.url>
+		<sonar.login>sqa_3ddcc4a95a443ae406329b7691c12195fd93a84b</sonar.login>
 	</properties>
 	<dependencies>
 		<dependency>

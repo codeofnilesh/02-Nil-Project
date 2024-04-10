@@ -5,12 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-
 import in.nilesh.binding.LoginForm;
 import in.nilesh.binding.RegisterForm;
 import in.nilesh.binding.ResetPwdForm;
@@ -41,6 +38,8 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private EmailUtils emailUtils;
+
+	Random random = new Random();
 
 	@Override
 	public Map<Integer, String> getCountries() {
@@ -93,9 +92,7 @@ public class UserServiceImpl implements UserService {
 	private String generateRandomPwd() {
 		String alphanumericCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuv";
 
-		StringBuffer randomString = new StringBuffer(5);
-		Random random = new Random();
-
+		StringBuilder randomString = new StringBuilder(5);
 		for (int i = 0; i < 5; i++) {
 			int randomIndex = random.nextInt(alphanumericCharacters.length() - 1);
 			char randomChar = alphanumericCharacters.charAt(randomIndex);

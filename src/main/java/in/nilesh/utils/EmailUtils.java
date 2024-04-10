@@ -1,11 +1,9 @@
 package in.nilesh.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
-
 import jakarta.mail.internet.MimeMessage;
 
 @Component
@@ -20,15 +18,12 @@ public class EmailUtils {
 
 			MimeMessage mimeMessage = jaMailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-
 			helper.setSubject(subject);
 			helper.setText(body, true);
 			helper.setTo(to);
-			System.out.println("Email send");
 			jaMailSender.send(mimeMessage);
 			isSent = true;
 		} catch (Exception e) {
-			System.out.println(e);
 		}
 		return isSent;
 

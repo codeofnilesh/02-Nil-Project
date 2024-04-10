@@ -1,9 +1,6 @@
 package in.nilesh.service;
 
 import java.util.Map;
-
-import org.springframework.stereotype.Service;
-
 import in.nilesh.binding.LoginForm;
 import in.nilesh.binding.RegisterForm;
 import in.nilesh.binding.ResetPwdForm;
